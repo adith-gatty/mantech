@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as htmlparser;
 import 'package:html/dom.dart' as dom;
+import 'package:mysql1/mysql1.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -36,8 +37,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String htmlData="";
+  String db="db"; //Enter your database name here
+  String pwd="Adith"; //Enter your password here
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("News"),
@@ -52,6 +56,25 @@ class _MyHomePageState extends State<MyHomePage> {
 <strong>बड़े पैमाने पर रोजगार के मौके बनाना चाहती है सरकार</strong>
 मोदी ने कहा, ‘कश्मीर में पर्यटन, कृषि, आईटी, स्वास्थ्य सेवाओं जैसे कई क्षेत्रों में निवेश की अपार संभावनाएं हैं। इससे ऐसा माहौल बनेगा, जिसमें क्षेत्र के लोगों को हुनर, कड़ी मेहनत का इनाम और सामान की सही कीमत मिलेगी।’"""
            ),
+           ElevatedButton(
+               onPressed: () async
+           {
+             try {
+               final conn = await MySqlConnection.connect(ConnectionSettings(
+                   host: 'localhost',
+                   port: 3306,
+                   user: 'root',
+                   db: db,
+                   password: pwd));
+               print("Connected");
+               await conn.query("CREATE TABLE table_1");
+
+             }
+             catch(e)
+             {
+               print(e.toString());
+             }
+           }, child: Text("Connect"))
          ],
        )
     );
