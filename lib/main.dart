@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as htmlparser;
 import 'package:html/dom.dart' as dom;
+import 'package:mantech/news_list.dart';
+import 'package:mantech/pages/detail_page.dart';
+import 'package:mantech/services/api.dart';
 import 'package:mysql1/mysql1.dart';
 void main() {
   runApp(const MyApp());
@@ -14,12 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'News App'),
     );
   }
 }
@@ -36,45 +39,139 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  String htmlData="";
-  String db="db"; //Enter your database name here
-  String pwd="Adith"; //Enter your password here
+
+  
+  int index=1;
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("News"),
+        toolbarTextStyle: TextStyle(color: Colors.black),
+        iconTheme: IconThemeData( color:Colors.black),
+        actionsIconTheme: IconThemeData( color:Colors.black),
+        backgroundColor: Colors.white,
+
+        title: Text("Kalwad Times",style:TextStyle(color: Colors.black)),
       ),
+       drawer: Drawer(
+         child:ListView(
+           children: [
+             UserAccountsDrawerHeader(
+               accountName: Text("Name"),
+               accountEmail: Text("Email"),
+               currentAccountPicture: CircleAvatar(
+                 backgroundColor: Colors.white,
+                 child:Text("A"),
+               ),
+
+             ),
+             ListTile(title:Text("Item 1")),
+             ListTile(title:Text("Item 2")),
+           ],
+         ),
+       ),
        body: ListView(
          children: [
-           Html(
-             data:"""<strong>नई दिल्ली</strong>
-पीएम नरेंद्र मोदी ने रविवार को कहा कि वह भारत को दुनिया का सबसे अच्छा निवेश ठिकाना बनाने में कोई कसर नहीं छोड़ेंगे। उन्होंने कहा कि भारत बिजनस के लिए एक बेहतर जगह होगी और लोगों में जोश भरने के साथ-साथ पूरे प्राइवेट सेक्टर में तेजी लाने के लिए वह हर संभव कोशिश करेंगे। पीएम मोदी ने विदेशी निवेश, निर्यात, ऑटोमोबाइल सेक्टर के रिवाइवल, डेटा प्रोटेक्शन और जम्मू-कश्मीर में आर्टिकल 370 हटाने के बाद वहां बन रहे अवसरों के बारे पर हमारे सहयोगी इकनॉमिक टाइम्स से बातचीत की।
-<strong>सिद्ध उद्यमी जम्मू-कश्मीर में करना चाहते हैं निवेश</strong>
-पीएम मोदी ने कहा, ‘सिर्फ देश के लोगों को भारत से उम्मीद नहीं है, वैश्विक ग्रोथ और विकास के संदर्भ में भी हमसे काफी आशाएं हैं।’ दुनिया को भारत से जो उम्मीद है, मोदी उसे पूरा करेंगे। प्रधानमंत्री यह सुनिश्चित करेंगे कि विकास की जो क्षमता भारत में है, वह हासिल हो। मोदी ने कहा कि अनुच्छेद 370 पर लिए गए हालिया फैसले के बाद जाने-माने उद्यमियों ने जम्मू-कश्मीर में निवेश करने में रुचि दिखाई है। उन्होंने कहा कि ‘क्लोज्ड एनवायरमेंट’ में आर्थिक विकास संभव नहीं है और इंटीग्रेशन से निवेश, इनोवेशन और आमदनी बढ़ेगी। भारत ने पिछले हफ्ते जम्मू-कश्मीर को विशेष दर्जा देने वाले अनुच्छेद 370 को वापस लेने के साथ उसे दो केंद्र शासित प्रदेशों में बांटने का फैसला लिया था।
-<strong>बड़े पैमाने पर रोजगार के मौके बनाना चाहती है सरकार</strong>
-मोदी ने कहा, ‘कश्मीर में पर्यटन, कृषि, आईटी, स्वास्थ्य सेवाओं जैसे कई क्षेत्रों में निवेश की अपार संभावनाएं हैं। इससे ऐसा माहौल बनेगा, जिसमें क्षेत्र के लोगों को हुनर, कड़ी मेहनत का इनाम और सामान की सही कीमत मिलेगी।’"""
-           ),
-           ElevatedButton(
-               onPressed: () async
-           {
-             try {
-               final conn = await MySqlConnection.connect(ConnectionSettings(
-                   host: 'localhost',
-                   port: 3306,
-                   user: 'root',
-                   db: db,
-                   password: pwd));
-               print("Connected");
-               await conn.query("CREATE TABLE table_1");
+           Container(
+             height: 50,
+             child: ListView(
+               scrollDirection: Axis.horizontal,
+               children:[
+                 for(var i=1;i<10;i++)
+                 ElevatedButton(
+                   style: ElevatedButton.styleFrom(
+                     primary:(i==index)?Colors.grey:Colors.white,
+                   ),
 
-             }
-             catch(e)
-             {
-               print(e.toString());
-             }
-           }, child: Text("Connect"))
+
+                   onPressed: (){
+                     index=i;
+                     setState(() {
+
+                     });
+                   },
+                   child: Text("Section $i",style:TextStyle(color: Colors.black)),
+
+                 ),
+
+               ],
+
+             )
+           ),
+           GestureDetector(
+             onTap:() {Navigator.push(
+               context,
+               MaterialPageRoute(
+                 builder: (BuildContext context) => Details(map: {"index1":index,"index2": 1}),
+               ),
+             );},
+             child: Container(
+                 //height: MediaQuery.of(context).size.height/2.5,
+                 child:Column(
+                     children:[
+                       Container(
+                          height: MediaQuery.of(context).size.height/4,
+                           child: Image.network(DATA[index-1]["data"][0]["image"])),
+                       ListTile(
+                         title: Text("${DATA[index-1]["data"][0]["title"]}"),
+                         subtitle: Text("${DATA[index-1]["data"][0]["content"]}"),
+
+                       ),
+                       Row(
+                         children:[
+                           IconButton(
+                             icon:Icon(Icons.bookmark_outline),
+                             onPressed: (){},
+                           ),
+                           IconButton(
+                             icon:Icon(Icons.share),
+                             onPressed: (){},
+                           ),
+
+                         ]
+                       ),
+                       Divider(
+                         height: 10,
+                         thickness: 2,
+                         color:Colors.black,
+                       )
+                     ]
+                 )
+             ),
+           ),
+           for(int i=2;i<=4;i++)
+             Column(
+               children: [
+                 GestureDetector(
+                   onTap:() {Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                       builder: (BuildContext context) => Details(map: {"index1":index,"index2": i}),
+                     ),
+                   );},
+                   child: Row(
+                     children:[
+                       Container(
+                         width: 120,
+                           child: Image.network(DATA[index-1]["data"][i-1]["image"])),
+                       SizedBox(width: 10),
+                       Text("${DATA[index-1]["data"][i-1]["title"]}",style:TextStyle(fontWeight: FontWeight.w400)),
+
+                     ]
+                   ),
+                 ),
+                 Divider(
+                   height: 10,
+                   thickness: 2,
+                   color:Colors.black,
+                 )
+               ],
+
+             )
+
+
+
          ],
        )
     );
