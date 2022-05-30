@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
       theme: ThemeData(
 
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: const MyHomePage(title: 'News App'),
     );
@@ -55,19 +55,37 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Kalwad Times",style:TextStyle(color: Colors.black)),
       ),
        drawer: Drawer(
+
          child:ListView(
            children: [
              UserAccountsDrawerHeader(
+
+
                accountName: Text("Name"),
                accountEmail: Text("Email"),
                currentAccountPicture: CircleAvatar(
                  backgroundColor: Colors.white,
-                 child:Text("A"),
+                 child:Text("Image"),
                ),
 
              ),
-             ListTile(title:Text("Item 1")),
-             ListTile(title:Text("Item 2")),
+             ListTile(title:Text("SETTINGS")),
+             TextButton(onPressed: (){},child:Text("Light mode")),
+             TextButton(onPressed: (){},child:Text("Notifications")),
+             Divider(
+               height: 10,
+               thickness: 2,
+               color:Colors.black,
+             ),
+             ListTile(title:Text("LATEST FEATURES")),
+             TextButton(onPressed: (){},child:Text("Learn more")),
+             Divider(
+               height: 10,
+               thickness: 2,
+               color:Colors.black,
+             ),
+             TextButton(onPressed: (){},child:Text("About us")),
+             TextButton(onPressed: (){},child:Text("Disclaimer")),
            ],
          ),
        ),
